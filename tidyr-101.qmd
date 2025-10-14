@@ -13,6 +13,7 @@ library(here)
 ```{r}
 #| message: false
 library(ggplot2)
+library(dplyr)
 ```
 
 
@@ -24,6 +25,23 @@ data("EuStockMarkets")
 
 ```{r}
 ggplot(EuStockMarkets, aes(x=time(EuStockMarkets), y=DAX)) +
+  geom_line()
+```
+
+```{r}
+EuStockMarkets <- 
+  EuStockMarkets |> 
+    as_tibble() |>  ## could be as.data.frame
+    mutate(date = as.numeric(time(EuStockMarkets)))
+```
+
+
+```{r}
+ggplot(EuStockMarkets, aes(x=date, y=DAX)) +
+  geom_line()
+```
+```{r}
+ggplot(EuStockMarkets, aes(x=date, y=CAC)) +
   geom_line()
 ```
 
