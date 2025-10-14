@@ -1,0 +1,29 @@
+---
+title: "Tidyr 101"
+author: "Fabrice Rossi"
+format: html
+---
+
+```{r}
+#| message: false
+here::i_am("dm-course-git-101.Rproj")
+library(here)
+```
+
+```{r}
+#| message: false
+library(ggplot2)
+```
+
+
+```{r}
+data("EuStockMarkets")
+```
+
+## Displaying one time series
+
+```{r}
+ggplot(EuStockMarkets, aes(x=time(EuStockMarkets), y=DAX)) +
+  geom_line()
+```
+
