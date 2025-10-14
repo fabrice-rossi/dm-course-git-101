@@ -45,3 +45,12 @@ ggplot(EuStockMarkets, aes(x=date, y=CAC)) +
   geom_line()
 ```
 
+## Two indexes on the same graphical representation ?
+
+### Poor man's solution
+
+```{r}
+ggplot(EuStockMarkets, aes(x=date, y=CAC)) +
+  geom_line(colour = "steelblue") +
+  geom_line(mapping=aes(y=DAX), colour = "salmon")
+```
