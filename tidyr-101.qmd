@@ -14,6 +14,7 @@ library(here)
 #| message: false
 library(ggplot2)
 library(dplyr)
+library(tidyr)
 ```
 
 
@@ -53,4 +54,19 @@ ggplot(EuStockMarkets, aes(x=date, y=CAC)) +
 ggplot(EuStockMarkets, aes(x=date, y=CAC)) +
   geom_line(colour = "steelblue") +
   geom_line(mapping=aes(y=DAX), colour = "salmon")
+```
+### Tidyr solution
+
+```{r}
+EuStockMarkets |>
+  pivot_longer(!date, names_to = "index") |>
+  slice_head(n=10) |>
+  knitr::kable()
+```
+
+```{r}
+EuStockMarkets |>
+  pivot_longer(!date, names_to = "index") |>
+  ggplot(aes(x=date, y=value, colour=index)) +
+  geom_line()
 ```
