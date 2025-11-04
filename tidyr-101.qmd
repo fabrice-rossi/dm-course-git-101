@@ -97,3 +97,12 @@ EuStockMarkets |>
   knitr::kable()
 ```
 
+### Alternative with `rowwise`.
+
+```{r}
+EuStockMarkets |>
+  select(!FTSE) |>
+  rowwise() |>
+  summarise(date, avg_stock = mean(c(DAX, SMI, CAC)))
+```
+
