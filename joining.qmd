@@ -46,10 +46,67 @@ planet_star <- inner_join(planets, stars, by = join_by(star_number))
 ```
 
 ```{r}
+#| message: false
 planet_star |>
   mutate(mass_ratio = Mass/(`Relative Mass`*sun_to_earth)) |>
   slice_max(mass_ratio) |>
-  select(planet=p_name, star=S_NAME, mass_ratio)
+  select(planet=p_name, star=S_NAME, mass_ratio) |>
+  knitr::kable()
 ```
 
+### Semi and anti join
+
+```{r}
+planets_without_star <- anti_join(planets, stars, by = join_by(star_number))
+stars_without_planet <- anti_join(stars, planets, by = join_by(star_number))
+```
+
+```{r}
+stars_with_planets <- semi_join(stars, planets, by = join_by(star_number))
+```
+
+We have `r nrow(planets_without_star)` planets without a corresponding star in the
+database and `r nrow(stars_without_planet)` stars without planets described in 
+the database. 
+
+### Left and right join
+
+```{r}
+all_planets <- left_join(planets, stars, by = join_by(star_number))
+all_stars <- right_join(planets, stars, by = join_by(star_number))
+all_all <- full_join(planets, stars, by = join_by(star_number))
+```
+
+## Star oriented analysis
+Is a star does not appear in the planet data frame, this means that this star
+has no associated habitable planet. We want to compute the distribution of the 
+average number of habitable planets per star. Here we are missing the stars
+without planet. 
+
+```{r}
+planet_star |> 
+  summarise(n=n(), .by=star_number) |>
+  ggplot(aes(x=n)) +
+    geom_bar()
+```
+
+```{r}
+all_stars |> 
+  summarise(n=n(), .by=star_number) |>
+  ggplot(aes(x=n)) +
+    geom_bar()
+```
+```{r}
+all_stars |>
+  summarise(n=sum(!is.na(PLANET_NUMBER)), .by=star_number) |>
+  ggplot(aes(x=n)) +
+    geom_bar()
+```
+
+```{r}
+all_stars |>
+  summarise(n=n_distinct(PLANET_NUMBER, na.rm = TRUE), .by=star_number) |>
+  ggplot(aes(x=n)) +
+    geom_bar()
+```
 
