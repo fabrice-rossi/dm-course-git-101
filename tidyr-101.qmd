@@ -106,3 +106,45 @@ EuStockMarkets |>
   summarise(date, avg_stock = mean(c(DAX, SMI, CAC)))
 ```
 
+## Reverse operation: pivot to a wider format
+
+```{r}
+EuLong <- 
+  EuStockMarkets |>
+    pivot_longer(!date)
+```
+
+```{r}
+EuLong |>
+  pivot_wider() |>
+  slice_head(n=10) |>
+  knitr::kable()
+```
+
+```{r}
+EuLong |>
+  pivot_wider(id_cols=date) |>
+  slice_head(n=10) |>
+  knitr::kable()
+```
+
+```{r}
+data("diamonds")
+dgroup <- 
+  diamonds |>
+  summarise(count = n(), median_price=median(price), .by=c(cut, color))
+```
+
+```{r}
+dgroup |>
+  pivot_wider(id_cols = cut, names_from = color, values_from = median_price)
+```
+
+Missing data support
+```{r}
+set.seed(42)
+dgroup |>
+  slice_sample(n=25) |>
+  pivot_wider(id_cols = cut, names_from = color, values_from = count)
+```
+
