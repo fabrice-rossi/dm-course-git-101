@@ -1,0 +1,19 @@
+---
+title: "Multiple data frames"
+author: "Fabrice Rossi"
+format: html
+---
+
+```{r}
+#| message: false
+here::i_am("dm-course-git-101.Rproj")
+library(here)
+```
+
+```{r}
+#| message: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(vroom)
+```
