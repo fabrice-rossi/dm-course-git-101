@@ -30,3 +30,26 @@ stars <- vroom(here("data","stars.csv"))
 sun_to_earth <- 333000
 ```
 
+## Planet oriented analyses
+
+We look for the planet that has the largest ratio between its mass and the 
+mass of its star. We cannot do that using the planets data frame only, we need
+to join it with the stars data frame.
+
+### Inner join
+
+In an inner join, we keep only matches between the two data frames (according to
+the `join_by` variable(s)). 
+
+```{r}
+planet_star <- inner_join(planets, stars, by = join_by(star_number))
+```
+
+```{r}
+planet_star |>
+  mutate(mass_ratio = Mass/(`Relative Mass`*sun_to_earth)) |>
+  slice_max(mass_ratio) |>
+  select(planet=p_name, star=S_NAME, mass_ratio)
+```
+
+
