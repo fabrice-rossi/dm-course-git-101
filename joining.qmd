@@ -17,3 +17,16 @@ library(dplyr)
 library(tidyr)
 library(vroom)
 ```
+
+## Data loading
+
+```{r}
+#| message: false
+planets <- vroom(here("data","planets.csv"))
+stars <- vroom(here("data","stars.csv"))
+```
+
+```{r}
+sun_to_earth <- 333000
+```
+
